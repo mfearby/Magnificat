@@ -16,6 +16,11 @@ repositories {
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
+//dependencies {
+//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
+//    debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
+//}
+
 kotlin {
     jvm {
         compilations.all {
@@ -29,7 +34,14 @@ kotlin {
                 implementation(compose.desktop.currentOs)
             }
         }
-        val jvmTest by getting
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+                implementation("junit:junit:4.13.2")
+//                androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
+//                debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
+            }
+        }
     }
 }
 
