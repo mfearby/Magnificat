@@ -16,11 +16,6 @@ repositories {
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
-//dependencies {
-//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
-//    debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
-//}
-
 kotlin {
     jvm {
         compilations.all {
@@ -38,8 +33,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
-//                androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
-//                debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
+                implementation("org.jetbrains.compose.ui:ui-test-junit4:1.2.1")
             }
         }
     }

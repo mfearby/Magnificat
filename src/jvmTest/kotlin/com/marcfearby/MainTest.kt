@@ -1,16 +1,16 @@
 package com.marcfearby
 
+import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Rule
 import org.junit.Test
 
 internal class MainTest {
 
-// Still trying to get test dependencies configured
-//    @get:Rule
-//    val rule = createComposeRule()
-//
+    @get:Rule
+    val rule = createComposeRule()
+
     @Test
     fun main() {
-
+        TODO("Add test for getting and saving preferences")
     }
 }
