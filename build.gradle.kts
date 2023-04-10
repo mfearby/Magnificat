@@ -3,6 +3,9 @@ plugins {
     id("org.jetbrains.compose") version "1.3.1"
 }
 
+group = "com.marcfearby"
+version = "1.0-SNAPSHOT"
+
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -15,6 +18,6 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "com.marcfearby.MainKt"
     }
 }

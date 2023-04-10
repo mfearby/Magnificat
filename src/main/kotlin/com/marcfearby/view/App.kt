@@ -1,4 +1,4 @@
-package view
+package com.marcfearby.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Button

@@ -1,3 +1,5 @@
+package com.marcfearby
+
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -10,7 +12,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import view.App
+import com.marcfearby.view.App
 import java.util.prefs.Preferences
 
 const val WINDOW_WIDTH = "windowWidth"
