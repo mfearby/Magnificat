@@ -1,5 +1,6 @@
 package com.marcfearby
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -44,7 +45,9 @@ fun main() = application {
         title = "Magnificat",
         state = state,
     ) {
-        App()
+        MaterialTheme {
+            App()
+        }
 
         LaunchedEffect(state) {
             snapshotFlow { state.size }
