@@ -14,6 +14,10 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    testImplementation(kotlin("test-junit"))
+    testImplementation(kotlin("test-common"))
+    testImplementation("org.jetbrains.compose.ui:ui-test-junit4:1.4.0")
+    implementation("io.kotest:kotest-assertions-core:5.5.5")
 }
 
 compose.desktop {

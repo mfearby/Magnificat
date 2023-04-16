@@ -11,15 +11,19 @@ import com.marcfearby.utils.PlayerIcons
 
 @Composable
 @Preview
-fun Player() {
+fun Player(
+    isPlaying: Boolean,
+    togglePlaying: (playing: Boolean) -> Unit
+) {
     Row {
         Text("Player goes here")
 
         PlayerButton(
-            icon = PlayerIcons.Play,
-            description = "Play",
+            icon = if (isPlaying) PlayerIcons.Pause else PlayerIcons.Play,
+            description = if (isPlaying) "Paused" else "Play",
             modifier = Modifier.padding(12.dp)
         ) {
+            togglePlaying(!isPlaying)
             println("Play pressed")
         }
 
