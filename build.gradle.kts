@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.8.10"
-    id("org.jetbrains.compose") version "1.3.1"
+    kotlin("jvm") version "1.8.20"
+    id("org.jetbrains.compose") version "1.4.0"
 }
 
 group = "com.marcfearby"
@@ -14,10 +14,12 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("org.jetbrains.compose.components:components-splitpane:1.4.0")
+
+    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
     testImplementation(kotlin("test-junit"))
     testImplementation(kotlin("test-common"))
     testImplementation("org.jetbrains.compose.ui:ui-test-junit4:1.4.0")
-    implementation("io.kotest:kotest-assertions-core:5.5.5")
 }
 
 compose.desktop {

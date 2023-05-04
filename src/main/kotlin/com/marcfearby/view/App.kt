@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import com.marcfearby.view.player.Player
+import com.marcfearby.view.tab.FileTab
 
 @Composable
 @Preview
@@ -31,6 +32,8 @@ fun App() {
             }
             Text("isPlaying: $isPlaying")
         }
+
+        FileTab()
 
     }
 }
