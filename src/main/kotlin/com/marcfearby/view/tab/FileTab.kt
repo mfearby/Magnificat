@@ -3,6 +3,7 @@ package com.marcfearby.view.tab
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
@@ -17,7 +18,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
-import org.jetbrains.compose.splitpane.VerticalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 
 // Based on demo source:
@@ -25,9 +25,11 @@ import org.jetbrains.compose.splitpane.rememberSplitPaneState
 
 @OptIn(ExperimentalSplitPaneApi::class, FlowPreview::class)
 @Composable
-fun FileTab(config: FileTabConfig) {
-    val horizontalState = rememberSplitPaneState(config.horizontalSplitPercentage)
-    val verticalState = rememberSplitPaneState(config.verticalSplitPercentage)
+fun FileTab(
+    horizontalSplitPercentage: Float,
+    onSplitterResize: (positionPercentage: Float) -> Unit
+) {
+    val horizontalState = rememberSplitPaneState(horizontalSplitPercentage)
     val minSize = 75.dp
 
     HorizontalSplitPane(
@@ -39,25 +41,13 @@ fun FileTab(config: FileTabConfig) {
             LaunchedEffect(horizontalState) {
                 snapshotFlow { horizontalState.positionPercentage }
                     .debounce(200)
-                    .onEach {
-                        println("Splitter: $it")
-                    }
+                    .onEach { onSplitterResize(it) }
                     .launchIn(this)
             }
         }
 
         second(minSize) {
-            VerticalSplitPane(splitPaneState = verticalState) {
-                first(minSize) {
-                    Box(Modifier.background(Color.Blue).fillMaxSize())
-                }
-                second(minSize) {
-                    Box(Modifier.background(Color.Green).fillMaxSize())
-                }
-                splitter {
-                    setupSplitter(this, SplitterOrientation.Vertical)
-                }
-            }
+            Text("Files grid here")
         }
 
         splitter {

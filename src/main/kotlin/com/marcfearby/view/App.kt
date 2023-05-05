@@ -6,7 +6,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import com.marcfearby.view.player.Player
 import com.marcfearby.view.tab.FileTab
-import com.marcfearby.view.tab.FileTabConfig
 
 @Composable
 @Preview
@@ -34,7 +33,10 @@ fun App() {
             Text("isPlaying: $isPlaying")
 
             FileTab(
-                FileTabConfig(0.2f, 0.3f)
+                horizontalSplitPercentage = 0.2f,
+                onSplitterResize = {
+                    println("Splitter: $it")
+                }
             )
         }
     }
