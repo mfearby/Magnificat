@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.marcfearby.view.App
+import kotlinx.coroutines.FlowPreview
 import java.util.prefs.Preferences
 
 const val WINDOW_WIDTH = "windowWidth"
@@ -21,6 +22,7 @@ const val WINDOW_HEIGHT = "windowHeight"
 const val WINDOW_X = "windowX"
 const val WINDOW_Y = "windowY"
 
+@OptIn(FlowPreview::class)
 fun main() = application {
 
     val prefs: Preferences = Preferences.userNodeForPackage(this::class.java)
