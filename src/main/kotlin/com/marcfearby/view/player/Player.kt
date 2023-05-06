@@ -20,7 +20,7 @@ fun Player(
 
         PlayerButton(
             icon = if (isPlaying) PlayerIcons.Pause else PlayerIcons.Play,
-            description = if (isPlaying) "Paused" else "Play",
+            description = if (isPlaying) "Pause" else "Play",
             modifier = Modifier.padding(12.dp)
         ) {
             togglePlaying(!isPlaying)
