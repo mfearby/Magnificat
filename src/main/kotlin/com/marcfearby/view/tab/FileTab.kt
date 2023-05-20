@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.marcfearby.utils.SplitterOrientation
 import com.marcfearby.utils.setupSplitter
@@ -36,7 +37,12 @@ fun FileTab(
         splitPaneState = horizontalState
     ) {
         first(minSize) {
-            Box(Modifier.background(Color.Red).fillMaxSize())
+            Box(
+                Modifier
+                    .testTag("fileTreePane")
+                    .background(Color.Red)
+                    .fillMaxSize()
+            )
 
             LaunchedEffect(horizontalState) {
                 snapshotFlow { horizontalState.positionPercentage }

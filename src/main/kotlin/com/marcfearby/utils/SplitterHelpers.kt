@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.SplitterScope
@@ -53,6 +54,7 @@ fun setupSplitter(scope: SplitterScope, orientation: SplitterOrientation) {
             Box(
                 if (orientation == SplitterOrientation.Vertical) {
                     Modifier
+                        .testTag("verticalSplitter")
                         .markAsHandle()
                         .splitterCursor(SplitterOrientation.Vertical)
                         .background(SolidColor(Color.Gray), alpha = 0.50f)
@@ -60,6 +62,7 @@ fun setupSplitter(scope: SplitterScope, orientation: SplitterOrientation) {
                         .fillMaxWidth()
                 } else {
                     Modifier
+                        .testTag("horizontalSplitter")
                         .markAsHandle()
                         .splitterCursor(SplitterOrientation.Horizontal)
                         .background(SolidColor(Color.Gray), alpha = 0.50f)

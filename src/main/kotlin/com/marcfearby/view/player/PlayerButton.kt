@@ -17,12 +17,12 @@ fun PlayerButton(
     onClick: () -> Unit
 ) {
     IconButton(
-        onClick = onClick
+        onClick = onClick,
+        modifier = modifier
     ) {
         Image(
             painter = getIcon(icon),
-            contentDescription = description,
-            modifier = modifier
+            contentDescription = description
         )
     }
 }
