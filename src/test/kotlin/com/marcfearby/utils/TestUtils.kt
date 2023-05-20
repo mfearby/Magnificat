@@ -17,7 +17,6 @@ fun saveScreenShot(testInstance: DesktopComposeUiTest): Path {
     val encodedImage = img.encodeToData(EncodedImageFormat.PNG) ?: error("Could not encode image to PNG")
     pngFile.writeBytes(encodedImage.bytes)
 
-    // File is actually a transparent PNG - no visible content :-\
     // Path will be like this: /var/folders/_9/8rc1bdf93fvdqkhbpp0kr_ch0000gq/T/test-screenshot4879348737488007814.png
     println("Saved screenshot: ${pngFile.pathString}")
 

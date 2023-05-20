@@ -5,16 +5,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.unit.dp
 import com.marcfearby.utils.saveScreenShot
-import org.junit.Rule
 import org.junit.Test
 
 internal class FileTabKtTest {
-
-    @get:Rule
-    val test = createComposeRule()
 
     @OptIn(ExperimentalTestApi::class)
     @Test
@@ -22,7 +17,7 @@ internal class FileTabKtTest {
         // 0.2f = 250.0.dp, 0.3f = 337.0.dp
         var splitterPercentage = 0.2f
 
-        test.setContent {
+        setContent {
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -36,18 +31,19 @@ internal class FileTabKtTest {
             }
         }
 
-        test.waitForIdle()
-        saveScreenShot(this)
+        waitForIdle()
 
-        // Try to move splitter to the right
-        test.onNodeWithTag("horizontalSplitter")
+        // Move splitter to the right
+        onNodeWithTag("horizontalSplitter")
             .performMouseInput {
-                press()
-                moveBy(delta = Offset(0.1f, 0.0f))
-                release()
+                dragAndDrop(Offset(0.0f, 0.0f), Offset(100f, 0.0f))
             }
 
-        test.onNodeWithTag("fileTreePane").assertWidthIsAtLeast(330.dp)
-        assert(splitterPercentage > 0.2f)
+        waitForIdle()
+        Thread.sleep(200)
+//        saveScreenShot(this)
+
+        assert(splitterPercentage > 0.5f)
+        onNodeWithTag("fileTreePane").assertWidthIsAtLeast(220.dp)
     }
 }
