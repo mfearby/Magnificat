@@ -13,7 +13,7 @@ internal class PlayerKtTest {
     val test = createComposeRule()
 
     @Test
-    fun clickPlayButton() {
+    fun `toggle playing to true when clicking Play button`() {
         var playing = false
 
         test.setContent {
@@ -27,7 +27,7 @@ internal class PlayerKtTest {
     }
 
     @Test
-    fun clickPauseButton() {
+    fun `toggle playing to false when clicking Pause button`() {
         var playing = true
 
         test.setContent {

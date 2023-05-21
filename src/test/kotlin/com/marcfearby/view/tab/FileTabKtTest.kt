@@ -13,7 +13,7 @@ internal class FileTabKtTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun moveSplitter() = runDesktopComposeUiTest(400, 400) {
+    fun `return splitter percentage after resize`() = runDesktopComposeUiTest(400, 400) {
         // 0.2f = 250.0.dp, 0.3f = 337.0.dp
         var splitterPercentage = 0.2f
 
@@ -40,6 +40,7 @@ internal class FileTabKtTest {
             }
 
         waitForIdle()
+        // TODO remove this from v1.5 of the test API when this should no longer be necessary
         Thread.sleep(200)
 //        saveScreenShot(this)
 

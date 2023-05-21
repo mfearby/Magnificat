@@ -10,7 +10,6 @@ import com.marcfearby.view.tab.FileTab
 @Composable
 @Preview
 fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
     var isPlaying by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -25,11 +24,6 @@ fun App() {
         }
     ) {
         Column {
-            Button(onClick = {
-                text = "Hello, Magnificat!"
-            }) {
-                Text(text)
-            }
             Text("isPlaying: $isPlaying")
 
             FileTab(
