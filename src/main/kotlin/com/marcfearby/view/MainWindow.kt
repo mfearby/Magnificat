@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.prefs.Preferences
 
+const val APPLICATION_NAME = "Magnificat"
 const val WINDOW_WIDTH = "windowWidth"
 const val WINDOW_HEIGHT = "windowHeight"
 const val WINDOW_X = "windowX"
@@ -25,7 +26,8 @@ const val WINDOW_Y = "windowY"
 @Composable
 fun MainWindow(
     preferences: Preferences,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val width = preferences.getInt(WINDOW_WIDTH, 1100)
     val height = preferences.getInt(WINDOW_HEIGHT, 750)
@@ -45,11 +47,11 @@ fun MainWindow(
 
     Window(
         onCloseRequest = onClose,
-        title = "Magnificat",
+        title = APPLICATION_NAME,
         state = state,
     ) {
         MaterialTheme {
-            App()
+            content()
         }
 
         LaunchedEffect(state) {
