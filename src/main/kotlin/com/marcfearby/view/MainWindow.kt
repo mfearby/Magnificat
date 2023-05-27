@@ -9,39 +9,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.rememberWindowState
+import com.marcfearby.utils.settings.MainWindowSettings
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.util.prefs.Preferences
 
 const val APPLICATION_NAME = "Magnificat"
-const val WINDOW_WIDTH = "windowWidth"
-const val WINDOW_HEIGHT = "windowHeight"
-const val WINDOW_X = "windowX"
-const val WINDOW_Y = "windowY"
 
 @OptIn(FlowPreview::class)
 @Composable
 fun MainWindow(
-    preferences: Preferences,
     onClose: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val width = preferences.getInt(WINDOW_WIDTH, 1100)
-    val height = preferences.getInt(WINDOW_HEIGHT, 750)
-    val winX = preferences.getInt(WINDOW_X, -1)
-    val winY = preferences.getInt(WINDOW_Y, -1)
+    val settings = MainWindowSettings.get()
 
-    val startPosition = if (winX < 0 && winY < 0)
+    val startPosition = if (settings.x < 0 && settings.y < 0)
         WindowPosition(Alignment.Center)
     else
-        WindowPosition(winX.dp, winY.dp)
+        WindowPosition(settings.x.dp, settings.y.dp)
 
     val state = rememberWindowState(
-        width = width.dp,
-        height = height.dp,
+        width = settings.width.dp,
+        height = settings.height.dp,
         position = startPosition
     )
 
@@ -59,8 +51,7 @@ fun MainWindow(
                 .debounce(200)
                 .onEach {
                     println("onWindowResize $it")
-                    preferences.putInt(WINDOW_WIDTH, it.width.value.toInt())
-                    preferences.putInt(WINDOW_HEIGHT, it.height.value.toInt())
+                    MainWindowSettings.saveSize(it)
                 }
                 .launchIn(this)
 
@@ -69,8 +60,7 @@ fun MainWindow(
                 .debounce(200)
                 .onEach {
                     println("window moved to: $it")
-                    preferences.putInt(WINDOW_X, it.x.value.toInt())
-                    preferences.putInt(WINDOW_Y, it.y.value.toInt())
+                    MainWindowSettings.savePosition(it)
                 }
                 .launchIn(this)
         }
