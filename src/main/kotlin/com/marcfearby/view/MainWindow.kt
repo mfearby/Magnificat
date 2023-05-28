@@ -9,12 +9,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.rememberWindowState
-import com.marcfearby.utils.settings.MainWindowSettings
+import com.marcfearby.common.settings.IMainWindowSettings
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.compose.koinInject
 
 const val APPLICATION_NAME = "Magnificat"
 
@@ -24,7 +25,8 @@ fun MainWindow(
     onClose: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val settings = MainWindowSettings.get()
+    val mainWindowSettings = koinInject<IMainWindowSettings>()
+    val settings = mainWindowSettings.get()
 
     val startPosition = if (settings.x < 0 && settings.y < 0)
         WindowPosition(Alignment.Center)
@@ -51,7 +53,7 @@ fun MainWindow(
                 .debounce(200)
                 .onEach {
                     println("onWindowResize $it")
-                    MainWindowSettings.saveSize(it)
+                    mainWindowSettings.saveSize(it)
                 }
                 .launchIn(this)
 
@@ -60,7 +62,7 @@ fun MainWindow(
                 .debounce(200)
                 .onEach {
                     println("window moved to: $it")
-                    MainWindowSettings.savePosition(it)
+                    mainWindowSettings.savePosition(it)
                 }
                 .launchIn(this)
         }

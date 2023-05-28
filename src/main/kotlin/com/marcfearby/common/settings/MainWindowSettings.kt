@@ -1,13 +1,19 @@
-package com.marcfearby.utils.settings
+package com.marcfearby.common.settings
 
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.WindowPosition
+import org.koin.dsl.module
 import java.util.prefs.Preferences
 
 const val WINDOW_WIDTH = "windowWidth"
 const val WINDOW_HEIGHT = "windowHeight"
 const val WINDOW_X = "windowX"
 const val WINDOW_Y = "windowY"
+
+// component for dependency injection via koin
+internal val mainWindowSettingsModule = module {
+    single<IMainWindowSettings> { MainWindowSettings() }
+}
 
 data class MainWindow(
     var width: Int,
@@ -22,7 +28,7 @@ interface IMainWindowSettings {
     fun saveSize(size: DpSize)
 }
 
-object MainWindowSettings: IMainWindowSettings {
+class MainWindowSettings: IMainWindowSettings {
     private val prefs: Preferences = Preferences.userNodeForPackage(this::class.java)
 
     override fun get(): MainWindow {

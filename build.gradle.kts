@@ -15,6 +15,8 @@ repositories {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.compose.components:components-splitpane:1.4.0")
+    implementation("io.insert-koin:koin-core:3.4.0")
+    implementation("io.insert-koin:koin-compose:1.0.1")
 
     testImplementation("io.kotest:kotest-assertions-core:5.5.5")
     testImplementation(kotlin("test-junit"))
