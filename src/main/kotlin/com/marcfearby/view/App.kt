@@ -11,15 +11,19 @@ import com.marcfearby.view.tab.FileTab
 @Preview
 fun App() {
     var isPlaying by remember { mutableStateOf(false) }
+    var isMuted by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 backgroundColor = MaterialTheme.colors.surface
             ) {
-                Player(isPlaying = isPlaying) {
-                    isPlaying = it
-                }
+                Player(
+                    isPlaying = isPlaying,
+                    isMuted = isMuted,
+                    togglePlaying = { isPlaying = it},
+                    toggleMuted = { isMuted = it}
+                )
             }
         }
     ) {

@@ -13,7 +13,7 @@ import com.marcfearby.utils.getIcon
 fun PlayerButton(
     icon: PlayerIcons,
     description: String,
-    modifier: Modifier = Modifier.padding(15.dp),
+    modifier: Modifier = Modifier.padding(start = 0.dp, top = 15.dp, end = 0.dp, bottom = 15.dp),
     onClick: () -> Unit
 ) {
     IconButton(
