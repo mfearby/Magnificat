@@ -6,8 +6,8 @@ import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.marcfearby.utils.PlayerIcons
-import com.marcfearby.utils.getIcon
+import com.marcfearby.common.utils.PlayerIcons
+import com.marcfearby.common.utils.getIcon
 
 @Composable
 fun PlayerButton(

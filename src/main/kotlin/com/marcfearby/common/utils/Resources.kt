@@ -1,4 +1,4 @@
-package com.marcfearby.utils
+package com.marcfearby.common.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter

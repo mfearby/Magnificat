@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.marcfearby.utils.SplitterOrientation
-import com.marcfearby.utils.setupSplitter
+import com.marcfearby.common.utils.SplitterOrientation
+import com.marcfearby.common.utils.setupSplitter
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn

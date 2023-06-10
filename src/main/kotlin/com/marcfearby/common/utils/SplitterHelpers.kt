@@ -1,4 +1,4 @@
-package com.marcfearby.utils
+package com.marcfearby.common.utils
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

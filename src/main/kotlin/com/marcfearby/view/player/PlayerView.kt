@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.marcfearby.utils.PlayerIcons
+import com.marcfearby.common.utils.PlayerIcons
 
 @Composable
 @Preview

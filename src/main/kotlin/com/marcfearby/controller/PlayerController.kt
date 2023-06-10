@@ -1,9 +1,12 @@
-package com.marcfearby.view.player
+package com.marcfearby.controller
 
 import androidx.compose.runtime.*
+import com.marcfearby.view.player.PlayerView
 
 @Composable
-fun PlayerController() {
+fun PlayerController(
+//    playlistProvider: IPlaylistProvider
+) {
     var isPlaying by remember { mutableStateOf(false) }
     var isMuted by remember { mutableStateOf(false) }
 

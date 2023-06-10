@@ -6,7 +6,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import com.marcfearby.view.player.PlayerController
+import com.marcfearby.controller.PlayerController
 import com.marcfearby.view.tab.FileTab
 
 @Composable
