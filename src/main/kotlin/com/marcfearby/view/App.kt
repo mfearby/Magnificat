@@ -21,8 +21,9 @@ fun App() {
                 Player(
                     isPlaying = isPlaying,
                     isMuted = isMuted,
-                    togglePlaying = { isPlaying = it},
-                    toggleMuted = { isMuted = it}
+                    togglePlaying = {isPlaying = it},
+                    toggleMuted = {isMuted = it},
+                    stopPlayback = {isPlaying = false}
                 )
             }
         }

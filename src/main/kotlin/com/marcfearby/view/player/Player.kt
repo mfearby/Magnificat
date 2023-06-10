@@ -18,7 +18,8 @@ fun Player(
     isPlaying: Boolean,
     isMuted: Boolean,
     togglePlaying: (playing: Boolean) -> Unit,
-    toggleMuted: (muted: Boolean) -> Unit
+    toggleMuted: (muted: Boolean) -> Unit,
+    stopPlayback: () -> Unit
 ) {
     Row {
         PlayerButton(
@@ -32,21 +33,22 @@ fun Player(
 
         PlayerButton(
             icon = PlayerIcons.Previous,
-            description = "Previous",
+            description = "Previous"
         ) {
             println("Previous pressed")
         }
 
         PlayerButton(
             icon = PlayerIcons.Stop,
-            description = "Stop",
+            description = "Stop"
         ) {
+            stopPlayback()
             println("Stop pressed")
         }
 
         PlayerButton(
             icon = PlayerIcons.Next,
-            description = "Next",
+            description = "Next"
         ) {
             println("Next pressed")
         }
