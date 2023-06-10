@@ -11,23 +11,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marcfearby.common.utils.PlayerIcons
+import com.marcfearby.model.PlayerState
 
 @Composable
 @Preview
 fun PlayerView(
-    isPlaying: Boolean,
+    playerState: PlayerState,
     isMuted: Boolean,
-    togglePlaying: (playing: Boolean) -> Unit,
-    toggleMuted: (muted: Boolean) -> Unit,
-    stopPlayback: () -> Unit
+    togglePlayerState: (state: PlayerState) -> Unit,
+    toggleMuted: (muted: Boolean) -> Unit
 ) {
+    val isPlaying = playerState == PlayerState.Playing
+
     Row {
         PlayerButton(
             icon = if (isPlaying) PlayerIcons.Pause else PlayerIcons.Play,
             description = if (isPlaying) "Pause" else "Play",
             modifier = Modifier.padding(start = 0.dp, top = 12.dp, end = 0.dp, bottom = 12.dp)
         ) {
-            togglePlaying(!isPlaying)
+            togglePlayerState(if (isPlaying) PlayerState.Paused else PlayerState.Playing)
             println("Play/Pause pressed")
         }
 
@@ -42,7 +44,7 @@ fun PlayerView(
             icon = PlayerIcons.Stop,
             description = "Stop"
         ) {
-            stopPlayback()
+            togglePlayerState(PlayerState.Stopped)
             println("Stop pressed")
         }
 

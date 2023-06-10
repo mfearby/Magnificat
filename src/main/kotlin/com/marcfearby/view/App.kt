@@ -1,33 +1,34 @@
 package com.marcfearby.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import com.marcfearby.controller.PlayerController
-import com.marcfearby.view.tab.FileTab
+import com.marcfearby.controller.TabPaneController
+import com.marcfearby.model.PlayerState
 
 @Composable
 @Preview
 fun App() {
+
+    var playerState by remember { mutableStateOf(PlayerState.Stopped) }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 backgroundColor = MaterialTheme.colors.surface
             ) {
-                PlayerController()
+                PlayerController(
+                    playerState = playerState,
+                    togglePlayerState = { playerState = it }
+                )
             }
         }
     ) {
-        Column {
-            FileTab(
-                horizontalSplitPercentage = 0.2f,
-                onSplitterResize = {
-                    println("Splitter: $it")
-                }
-            )
-        }
+        TabPaneController(
+            playerState = playerState
+        )
     }
 }

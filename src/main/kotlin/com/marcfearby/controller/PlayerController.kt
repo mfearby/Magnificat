@@ -1,20 +1,20 @@
 package com.marcfearby.controller
 
 import androidx.compose.runtime.*
+import com.marcfearby.model.PlayerState
 import com.marcfearby.view.player.PlayerView
 
 @Composable
 fun PlayerController(
-//    playlistProvider: IPlaylistProvider
+    playerState: PlayerState,
+    togglePlayerState: (state: PlayerState) -> Unit,
 ) {
-    var isPlaying by remember { mutableStateOf(false) }
     var isMuted by remember { mutableStateOf(false) }
 
     PlayerView(
-        isPlaying = isPlaying,
+        playerState = playerState,
         isMuted = isMuted,
-        togglePlaying = { isPlaying = it },
-        toggleMuted = { isMuted = it },
-        stopPlayback = { isPlaying = false }
+        togglePlayerState = { togglePlayerState(it) },
+        toggleMuted = { isMuted = it }
     )
 }

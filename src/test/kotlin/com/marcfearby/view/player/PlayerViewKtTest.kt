@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
+import com.marcfearby.model.PlayerState
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -14,65 +15,58 @@ internal class PlayerViewKtTest {
     @get:Rule
     val test = createComposeRule()
 
-    private var isPlaying = false
+    private var playerState = PlayerState.Stopped
     private var isMuted = false
 
-    private fun togglePlaying(playing: Boolean) {
-        isPlaying = playing
+    private fun togglePlayerState(state: PlayerState) {
+        playerState = state
     }
 
     private fun toggleMuted(muted: Boolean) {
         isMuted = muted
     }
 
-    private fun stopPlayback() {
-        isPlaying = false
-    }
-
     @After
     fun afterEach() {
-        isPlaying = false
+        playerState = PlayerState.Stopped
         isMuted = false
     }
 
     @Composable
     private fun setupPlayer() = PlayerView(
-        isPlaying = isPlaying,
+        playerState = playerState,
         isMuted = isMuted,
-        togglePlaying = ::togglePlaying,
-        toggleMuted = ::toggleMuted,
-        stopPlayback = ::stopPlayback
+        togglePlayerState = ::togglePlayerState,
+        toggleMuted = ::toggleMuted
     )
 
     @Test
-    fun `toggle isPlaying to true when Play button is clicked`() {
+    fun `toggle playerState to Playing when Play button is clicked`() {
         test.setContent {
             setupPlayer()
         }
-
         test.onNodeWithContentDescription("Play").performClick()
-        assertEquals(true, isPlaying)
+        assertEquals(PlayerState.Playing, playerState)
     }
 
     @Test
-    fun `toggle isPlaying to false when Pause button is clicked`() {
-        isPlaying = true
+    fun `toggle playerState to Paused when Pause button is clicked`() {
+        playerState = PlayerState.Playing
         test.setContent {
             setupPlayer()
         }
-
         test.onNodeWithContentDescription("Pause").performClick()
-        assertEquals(false, isPlaying)
+        assertEquals(PlayerState.Paused, playerState)
     }
 
     @Test
-    fun `toggle isPlaying to false when Stop button is clicked`() {
+    fun `toggle playerState to Stopped when Stop button is clicked`() {
         // TODO also clear currently-playing track name and reset slider to zero
-        isPlaying = true
+        playerState = PlayerState.Playing
         test.setContent {
             setupPlayer()
         }
         test.onNodeWithContentDescription("Stop").performClick()
-        assertEquals(false, isPlaying)
+        assertEquals(PlayerState.Stopped, playerState)
     }
 }
