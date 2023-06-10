@@ -14,7 +14,7 @@ import com.marcfearby.utils.PlayerIcons
 
 @Composable
 @Preview
-fun Player(
+fun PlayerView(
     isPlaying: Boolean,
     isMuted: Boolean,
     togglePlaying: (playing: Boolean) -> Unit,

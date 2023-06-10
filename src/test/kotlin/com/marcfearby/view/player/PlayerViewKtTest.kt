@@ -9,7 +9,7 @@ import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
-internal class PlayerKtTest {
+internal class PlayerViewKtTest {
 
     @get:Rule
     val test = createComposeRule()
@@ -36,7 +36,7 @@ internal class PlayerKtTest {
     }
 
     @Composable
-    private fun setupPlayer() = Player(
+    private fun setupPlayer() = PlayerView(
         isPlaying = isPlaying,
         isMuted = isMuted,
         togglePlaying = ::togglePlaying,
