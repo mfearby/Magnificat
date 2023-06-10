@@ -8,9 +8,9 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.unit.dp
 import org.junit.Test
 
+@OptIn(ExperimentalTestApi::class)
 internal class FileTabKtTest {
 
-    @OptIn(ExperimentalTestApi::class)
     @Test
     fun `return new percentage after resizing horizontal splitter`() = runDesktopComposeUiTest(400, 400) {
         // 0.2f = 250.0.dp, 0.3f = 337.0.dp

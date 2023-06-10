@@ -21,17 +21,11 @@ fun PlayerView(
     togglePlayerState: (state: PlayerState) -> Unit,
     toggleMuted: (muted: Boolean) -> Unit
 ) {
-    val isPlaying = playerState == PlayerState.Playing
-
     Row {
-        PlayerButton(
-            icon = if (isPlaying) PlayerIcons.Pause else PlayerIcons.Play,
-            description = if (isPlaying) "Pause" else "Play",
-            modifier = Modifier.padding(start = 0.dp, top = 12.dp, end = 0.dp, bottom = 12.dp)
-        ) {
-            togglePlayerState(if (isPlaying) PlayerState.Paused else PlayerState.Playing)
-            println("Play/Pause pressed")
-        }
+        PlayPauseButton(
+            playerState = playerState,
+            togglePlayerState = { togglePlayerState(it) }
+        )
 
         PlayerButton(
             icon = PlayerIcons.Previous,
