@@ -1,19 +1,14 @@
 package com.marcfearby.view.player
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.*
 import com.marcfearby.model.PlayerState
 import org.junit.After
-import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalTestApi::class)
 internal class PlayerViewKtTest {
-
-    @get:Rule
-    val test = createComposeRule()
 
     private var playerState = PlayerState.Stopped
     private var isMuted = false
@@ -33,41 +28,60 @@ internal class PlayerViewKtTest {
     }
 
     @Composable
-    private fun setupPlayer() = PlayerView(
+    private fun setupPlayer(
+        currentTrack: String = ""
+    ) = PlayerView(
         playerState = playerState,
         isMuted = isMuted,
         togglePlayerState = ::togglePlayerState,
         toggleMuted = ::toggleMuted,
-        currentTrack = ""
+        currentTrack = currentTrack
     )
 
     @Test
-    fun `toggle playerState to Playing when Play button is clicked`() {
-        test.setContent {
+    fun `toggle playerState to Playing when Play button is clicked`() = runDesktopComposeUiTest {
+        setContent {
             setupPlayer()
         }
-        test.onNodeWithContentDescription("Play").performClick()
+        onNodeWithContentDescription("Play").performClick()
         assertEquals(PlayerState.Playing, playerState)
     }
 
     @Test
-    fun `toggle playerState to Paused when Pause button is clicked`() {
+    fun `toggle playerState to Paused when Pause button is clicked`() = runDesktopComposeUiTest {
         playerState = PlayerState.Playing
-        test.setContent {
+        setContent {
             setupPlayer()
         }
-        test.onNodeWithContentDescription("Pause").performClick()
+        onNodeWithContentDescription("Pause").performClick()
         assertEquals(PlayerState.Paused, playerState)
     }
 
     @Test
-    fun `toggle playerState to Stopped when Stop button is clicked`() {
+    fun `toggle playerState to Stopped when Stop button is clicked`() = runDesktopComposeUiTest {
         // TODO also clear currently-playing track name and reset slider to zero
         playerState = PlayerState.Playing
-        test.setContent {
+        setContent {
             setupPlayer()
         }
-        test.onNodeWithContentDescription("Stop").performClick()
+        onNodeWithContentDescription("Stop").performClick()
         assertEquals(PlayerState.Stopped, playerState)
+    }
+
+    @Test
+    fun `should display the title of the currently playing track`() = runDesktopComposeUiTest {
+        val trackName = "Hello there"
+        setContent {
+            setupPlayer(trackName)
+        }
+        onNodeWithTag("currentTrack").assertTextEquals(trackName)
+    }
+
+    @Test
+    fun `should show a blank title if nothing is currently playing`() = runDesktopComposeUiTest {
+        setContent {
+            setupPlayer()
+        }
+        onNodeWithTag("currentTrack").assertTextEquals("")
     }
 }

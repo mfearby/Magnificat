@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marcfearby.common.utils.PlayerIcons
@@ -66,7 +67,10 @@ fun PlayerView(
                 .align(alignment = Alignment.CenterVertically)
                 .padding(start = 15.dp, top = 0.dp, end = 15.dp, bottom = 0.dp)
         ) {
-            Text(currentTrack)
+            Text(
+                text = currentTrack,
+                modifier = Modifier.testTag("currentTrack")
+            )
             Text("progress slider goes here")
         }
 
