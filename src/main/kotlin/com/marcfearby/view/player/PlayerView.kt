@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marcfearby.common.utils.PlayerIcons
 import com.marcfearby.model.PlayerState
+import com.marcfearby.model.PlayerState.*
 
 @Composable
 @Preview
@@ -19,7 +20,8 @@ fun PlayerView(
     playerState: PlayerState,
     isMuted: Boolean,
     togglePlayerState: (state: PlayerState) -> Unit,
-    toggleMuted: (muted: Boolean) -> Unit
+    toggleMuted: (muted: Boolean) -> Unit,
+    currentTrack: String
 ) {
     Row {
         PlayPauseButton(
@@ -31,6 +33,7 @@ fun PlayerView(
             icon = PlayerIcons.Previous,
             description = "Previous"
         ) {
+            togglePlayerState(MovingPrevious)
             println("Previous pressed")
         }
 
@@ -38,7 +41,7 @@ fun PlayerView(
             icon = PlayerIcons.Stop,
             description = "Stop"
         ) {
-            togglePlayerState(PlayerState.Stopped)
+            togglePlayerState(Stopped)
             println("Stop pressed")
         }
 
@@ -46,6 +49,7 @@ fun PlayerView(
             icon = PlayerIcons.Next,
             description = "Next"
         ) {
+            togglePlayerState(MovingNext)
             println("Next pressed")
         }
 
@@ -62,7 +66,7 @@ fun PlayerView(
                 .align(alignment = Alignment.CenterVertically)
                 .padding(start = 15.dp, top = 0.dp, end = 15.dp, bottom = 0.dp)
         ) {
-            Text("title goes here")
+            Text(currentTrack)
             Text("progress slider goes here")
         }
 

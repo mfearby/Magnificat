@@ -8,6 +8,7 @@ import com.marcfearby.view.player.PlayerView
 fun PlayerController(
     playerState: PlayerState,
     togglePlayerState: (state: PlayerState) -> Unit,
+    currentTrack: String
 ) {
     var isMuted by remember { mutableStateOf(false) }
 
@@ -15,6 +16,7 @@ fun PlayerController(
         playerState = playerState,
         isMuted = isMuted,
         togglePlayerState = { togglePlayerState(it) },
-        toggleMuted = { isMuted = it }
+        toggleMuted = { isMuted = it },
+        currentTrack = currentTrack
     )
 }

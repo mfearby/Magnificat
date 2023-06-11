@@ -1,7 +1,9 @@
 package com.marcfearby.model
 
-enum class PlayerState(val state: Int) {
-    Stopped(-1),
-    Paused(0),
-    Playing(1)
+enum class PlayerState {
+    Stopped,
+    Paused,
+    Playing,
+    MovingNext,
+    MovingPrevious
 }
