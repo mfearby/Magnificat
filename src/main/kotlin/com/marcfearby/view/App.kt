@@ -5,52 +5,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
+import com.marcfearby.audio.IAudioPlayer
 import com.marcfearby.controller.PlayerController
 import com.marcfearby.controller.TabPaneController
 import com.marcfearby.model.PlayerState.*
+import org.koin.compose.koinInject
 
 @Composable
 @Preview
 fun App() {
 
     var playerState by remember { mutableStateOf(Stopped) }
-    val trackList = listOf("111", "222", "333", "444", "555")
     var currentTrackIndex by remember { mutableStateOf(-1) }
     var currentTrack by remember { mutableStateOf("") }
-
-    fun stop() {
-        playerState = Stopped
-        currentTrackIndex = -1
-        currentTrack = ""
-    }
-
-    fun play() {
-        playerState = Playing
-        if (currentTrackIndex < 0) {
-            currentTrackIndex = 0
-        }
-        currentTrack = trackList[currentTrackIndex]
-    }
-
-    fun pause() {
-        playerState = Paused
-    }
-
-    fun previous() {
-        if (currentTrackIndex > 0) {
-            playerState = Playing
-            currentTrack = trackList[--currentTrackIndex]
-            play()
-        }
-    }
-
-    fun next() {
-        if (currentTrackIndex < trackList.lastIndex) {
-            playerState = Playing
-            currentTrack = trackList[++currentTrackIndex]
-            play()
-        }
-    }
+    val audioPlayer = koinInject<IAudioPlayer>()
 
     Scaffold(
         topBar = {
@@ -60,13 +28,10 @@ fun App() {
                 PlayerController(
                     playerState = playerState,
                     togglePlayerState = {
-                        when (it) {
-                            Playing -> play()
-                            Paused -> pause()
-                            Stopped -> stop()
-                            MovingNext -> next()
-                            MovingPrevious -> previous()
-                        }
+                        val newState = audioPlayer.togglePlayerState(it)
+                        playerState = newState.playerState
+                        currentTrack = newState.currentTrack
+                        currentTrackIndex = newState.currentTrackIndex
                     },
                     currentTrack = currentTrack
                 )

@@ -41,7 +41,7 @@ internal class FileTabKtTest {
         waitForIdle()
 
         // TODO remove this from v1.5 of the test API when it should no longer be necessary
-        Thread.sleep(200)
+        Thread.sleep(300)
 
         assert(splitterPercentage > 0.5f)
         onNodeWithTag("fileTreePane").assertWidthIsAtLeast(220.dp)
