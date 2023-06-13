@@ -18,10 +18,12 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.4.0")
     implementation("io.insert-koin:koin-compose:1.0.1")
 
-    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
     testImplementation(kotlin("test-junit"))
     testImplementation(kotlin("test-common"))
     testImplementation("org.jetbrains.compose.ui:ui-test-junit4:1.4.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
+    testImplementation("io.insert-koin:koin-test:3.4.0")
+    testImplementation("io.insert-koin:koin-test-junit4:3.4.0")
 }
 
 compose.desktop {
