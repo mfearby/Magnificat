@@ -35,7 +35,7 @@ internal class PlayerViewKtTest {
         isMuted = isMuted,
         togglePlayerState = ::togglePlayerState,
         toggleMuted = ::toggleMuted,
-        currentTrack = currentTrack
+        currentTrackTitle = currentTrack
     )
 
     @Test

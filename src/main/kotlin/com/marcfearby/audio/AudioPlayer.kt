@@ -11,15 +11,13 @@ internal val audioPlayerModule = module {
 
 data class AudioPlayerState(
     val currentTrackIndex: Int,
-    val currentTrack: String,
+    val currentTrackTitle: String,
     val playerState: PlayerState
 )
 
 interface IAudioPlayer {
     val playerState: PlayerState
-    var currentTrackIndex: Int
-    var currentTrack: String
-    var trackList: List<String>
+    fun setTrackList(files: List<String>, startIndex: Int): AudioPlayerState
     fun togglePlayerState(state: PlayerState): AudioPlayerState
     fun play(): AudioPlayerState
     fun pause(): AudioPlayerState
@@ -31,9 +29,9 @@ interface IAudioPlayer {
 class AudioPlayer: IAudioPlayer {
 
     override var playerState = Stopped
-    override var currentTrackIndex = -1
-    override var currentTrack = ""
-    override var trackList = listOf("111", "222", "333", "444", "555")
+    private var currentTrackIndex = -1
+    private var currentTrackTitle = ""
+    private var trackList = mutableListOf("111", "222", "333", "444", "555")
 
     override fun togglePlayerState(state: PlayerState): AudioPlayerState = when (state) {
         Playing -> play()
@@ -43,7 +41,13 @@ class AudioPlayer: IAudioPlayer {
         MovingPrevious -> previous()
     }
 
-    private fun currentState() = AudioPlayerState(currentTrackIndex, currentTrack, playerState)
+    override fun setTrackList(files: List<String>, startIndex: Int): AudioPlayerState {
+        trackList = files.toMutableList()
+        currentTrackIndex = startIndex
+        return play()
+    }
+
+    private fun currentState() = AudioPlayerState(currentTrackIndex, currentTrackTitle, playerState)
 
     override fun play(): AudioPlayerState {
         println("play")
@@ -51,7 +55,7 @@ class AudioPlayer: IAudioPlayer {
         if (currentTrackIndex < 0) {
             currentTrackIndex = 0
         }
-        currentTrack = trackList[currentTrackIndex]
+        currentTrackTitle = trackList[currentTrackIndex]
         return currentState()
     }
 
@@ -65,7 +69,7 @@ class AudioPlayer: IAudioPlayer {
         println("stop")
         playerState = Stopped
         currentTrackIndex = -1
-        currentTrack = ""
+        currentTrackTitle = ""
         return currentState()
     }
 
@@ -73,7 +77,7 @@ class AudioPlayer: IAudioPlayer {
         println("next")
         if (currentTrackIndex < trackList.lastIndex) {
             playerState = Playing
-            currentTrack = trackList[++currentTrackIndex]
+            currentTrackTitle = trackList[++currentTrackIndex]
             play()
         }
         return currentState()
@@ -83,7 +87,7 @@ class AudioPlayer: IAudioPlayer {
         println("previous")
         if (currentTrackIndex > 0) {
             playerState = Playing
-            currentTrack = trackList[--currentTrackIndex]
+            currentTrackTitle = trackList[--currentTrackIndex]
             play()
         }
         return currentState()

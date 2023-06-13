@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
+import com.marcfearby.audio.AudioPlayerState
 import com.marcfearby.audio.IAudioPlayer
 import com.marcfearby.controller.PlayerController
 import com.marcfearby.controller.TabPaneController
@@ -17,8 +18,14 @@ fun App() {
 
     var playerState by remember { mutableStateOf(Stopped) }
     var currentTrackIndex by remember { mutableStateOf(-1) }
-    var currentTrack by remember { mutableStateOf("") }
+    var currentTrackTitle by remember { mutableStateOf("") }
     val audioPlayer = koinInject<IAudioPlayer>()
+
+    fun loadNewState(newState: AudioPlayerState) {
+        playerState = newState.playerState
+        currentTrackTitle = newState.currentTrackTitle
+        currentTrackIndex = newState.currentTrackIndex
+    }
 
     Scaffold(
         topBar = {
@@ -28,18 +35,22 @@ fun App() {
                 PlayerController(
                     playerState = playerState,
                     togglePlayerState = {
-                        val newState = audioPlayer.togglePlayerState(it)
-                        playerState = newState.playerState
-                        currentTrack = newState.currentTrack
-                        currentTrackIndex = newState.currentTrackIndex
+                        loadNewState(
+                            audioPlayer.togglePlayerState(it)
+                        )
                     },
-                    currentTrack = currentTrack
+                    currentTrackTitle = currentTrackTitle
                 )
             }
         }
     ) {
         TabPaneController(
-            playerState = playerState
+            playerState = playerState,
+            onSetTrackList = { files, startIndex ->
+                loadNewState(
+                    audioPlayer.setTrackList(files, startIndex)
+                )
+            }
         )
     }
 }

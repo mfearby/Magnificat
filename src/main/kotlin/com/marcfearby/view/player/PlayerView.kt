@@ -22,7 +22,7 @@ fun PlayerView(
     isMuted: Boolean,
     togglePlayerState: (state: PlayerState) -> Unit,
     toggleMuted: (muted: Boolean) -> Unit,
-    currentTrack: String
+    currentTrackTitle: String
 ) {
     Row {
         PlayPauseButton(
@@ -68,7 +68,7 @@ fun PlayerView(
                 .padding(start = 15.dp, top = 0.dp, end = 15.dp, bottom = 0.dp)
         ) {
             Text(
-                text = currentTrack,
+                text = currentTrackTitle,
                 modifier = Modifier.testTag("currentTrack")
             )
             Text("progress slider goes here")
