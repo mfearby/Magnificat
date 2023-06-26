@@ -1,14 +1,14 @@
 package com.marcfearby.view.player
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Slider
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marcfearby.common.utils.PlayerIcons
@@ -64,14 +64,25 @@ fun PlayerView(
 
         Column(
             modifier = Modifier
+                .weight(1f)
                 .align(alignment = Alignment.CenterVertically)
                 .padding(start = 15.dp, top = 0.dp, end = 15.dp, bottom = 0.dp)
         ) {
             Text(
                 text = currentTrackTitle,
-                modifier = Modifier.testTag("currentTrack")
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().testTag("currentTrack")
+                    .padding(start = 0.dp, top = 5.dp, end = 0.dp, bottom = 0.dp)
             )
-            Text("progress slider goes here")
+            var sliderState by remember { mutableStateOf(0f) }
+            Slider(
+                value = sliderState,
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                onValueChange = { progress ->
+                    println("slider state: $progress")
+                    sliderState = progress
+                }
+            )
         }
 
         Text(
