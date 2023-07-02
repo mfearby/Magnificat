@@ -17,6 +17,7 @@ dependencies {
     implementation("org.jetbrains.compose.components:components-splitpane:1.4.0")
     implementation("io.insert-koin:koin-core:3.4.0")
     implementation("io.insert-koin:koin-compose:1.0.1")
+    implementation("org.openjfx:javafx-media:20.0.1")
 
     testImplementation(kotlin("test-junit"))
     testImplementation(kotlin("test-common"))
