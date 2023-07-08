@@ -25,6 +25,7 @@ interface IAudioPlayer {
     fun stop(): AudioPlayerState
     fun next(): AudioPlayerState
     fun previous(): AudioPlayerState
+    fun release()
 }
 
 class AudioPlayer(
@@ -35,6 +36,10 @@ class AudioPlayer(
     private var currentTrackIndex = -1
     private var currentTrackTitle = ""
     private var trackList = mutableListOf("111", "222", "333", "444", "555")
+
+    override fun release() {
+        audioPlayerWorker.release()
+    }
 
     override fun togglePlayerState(state: PlayerState): AudioPlayerState = when (state) {
         Playing -> play()

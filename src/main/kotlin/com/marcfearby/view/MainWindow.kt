@@ -23,7 +23,7 @@ const val APPLICATION_NAME = "Magnificat"
 @Composable
 fun MainWindow(
     onClose: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> () -> Unit
 ) {
     val mainWindowSettings = koinInject<IMainWindowSettings>()
     val settings = mainWindowSettings.get()
@@ -39,13 +39,18 @@ fun MainWindow(
         position = startPosition
     )
 
+    var cleanup: (() -> Unit)? = null
+
     Window(
-        onCloseRequest = onClose,
+        onCloseRequest = {
+            cleanup?.invoke()
+            onClose()
+        },
         title = APPLICATION_NAME,
         state = state,
     ) {
         MaterialTheme {
-            content()
+            cleanup = content()
         }
 
         LaunchedEffect(state) {

@@ -3,6 +3,7 @@ package com.marcfearby.audio
 import com.marcfearby.common.utils.isMacOS
 import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery
 import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.component.CallbackMediaPlayerComponent
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
 
@@ -11,10 +12,16 @@ interface IAudioPlayerWorker {
     fun stop()
     fun pause()
     fun setVolume(volume: Double)
+    fun release()
 }
 
 class AudioPlayerWorker: IAudioPlayerWorker {
     private var mediaPlayer: MediaPlayer? = null
+
+    override fun release() {
+        println("Releasing MediaPlayer resources")
+        mediaPlayer?.release()
+    }
 
     override fun play(track: String?) {
         track?.let {
@@ -39,7 +46,7 @@ class AudioPlayerWorker: IAudioPlayerWorker {
         initPlayer(path)
     }
 
-    // This requires you have have VLC already installed on your computer (when debugging in IntelliJ).
+    // This requires you to have VLC installed on your computer (when debugging in IntelliJ).
     // Apparently there's a way to package libvlc from that installation. I'll worry about that later.
     private fun initPlayer(path: String) {
         NativeDiscovery().discover()
@@ -52,6 +59,22 @@ class AudioPlayerWorker: IAudioPlayerWorker {
         }
 
         mediaPlayer?.media()?.play(path)
+
+        mediaPlayer?.events()?.addMediaPlayerEventListener(object: MediaPlayerEventAdapter() {
+            override fun mediaPlayerReady(mediaPlayer: MediaPlayer?) {
+                super.mediaPlayerReady(mediaPlayer)
+                println("on ready")
+            }
+
+            override fun timeChanged(mediaPlayer: MediaPlayer?, newTime: Long) {
+                println("new time: $newTime")
+            }
+
+            override fun lengthChanged(mediaPlayer: MediaPlayer?, newLength: Long) {
+                println("new length: $newLength")
+            }
+        })
+
     }
 }
 

@@ -14,7 +14,7 @@ import org.koin.compose.koinInject
 
 @Composable
 @Preview
-fun App() {
+fun App(): () -> Unit {
 
     var playerState by remember { mutableStateOf(Stopped) }
     var currentTrackIndex by remember { mutableStateOf(-1) }
@@ -52,5 +52,10 @@ fun App() {
                 )
             }
         )
+    }
+
+    return {
+        println("Calling audioPlayer.release() before exiting...")
+        audioPlayer.release()
     }
 }
