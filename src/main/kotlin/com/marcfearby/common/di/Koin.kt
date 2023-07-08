@@ -9,7 +9,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
     appDeclaration()
     modules(
         mainWindowSettingsModule,
-        audioPlayerModule
+        audioPlayerModule,
     )
 }
 

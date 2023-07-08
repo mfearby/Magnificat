@@ -6,7 +6,8 @@ import org.koin.dsl.module
 
 // component for dependency injection via koin
 internal val audioPlayerModule = module {
-    single<IAudioPlayer> { AudioPlayer() }
+    val worker = AudioPlayerWorker()
+    single<IAudioPlayer> { AudioPlayer(worker) }
 }
 
 data class AudioPlayerState(
@@ -26,7 +27,9 @@ interface IAudioPlayer {
     fun previous(): AudioPlayerState
 }
 
-class AudioPlayer: IAudioPlayer {
+class AudioPlayer(
+    private val audioPlayerWorker: IAudioPlayerWorker
+): IAudioPlayer {
 
     override var playerState = Stopped
     private var currentTrackIndex = -1
@@ -56,6 +59,7 @@ class AudioPlayer: IAudioPlayer {
             currentTrackIndex = 0
         }
         currentTrackTitle = trackList[currentTrackIndex]
+        audioPlayerWorker.play(currentTrackTitle)
         return currentState()
     }
 
