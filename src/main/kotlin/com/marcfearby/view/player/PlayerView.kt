@@ -22,8 +22,16 @@ fun PlayerView(
     isMuted: Boolean,
     togglePlayerState: (state: PlayerState) -> Unit,
     toggleMuted: (muted: Boolean) -> Unit,
-    currentTrackTitle: String
+    currentTrackTitle: String,
+    trackProgress: Float
 ) {
+    var sliderProgress by remember { mutableStateOf(0f) }
+
+    LaunchedEffect(trackProgress) {
+        println("updating slider progress: $trackProgress")
+        sliderProgress = trackProgress
+    }
+
     Row {
         PlayPauseButton(
             playerState = playerState,
@@ -74,13 +82,12 @@ fun PlayerView(
                 modifier = Modifier.fillMaxWidth().testTag("currentTrack")
                     .padding(start = 0.dp, top = 5.dp, end = 0.dp, bottom = 0.dp)
             )
-            var sliderState by remember { mutableStateOf(0f) }
             Slider(
-                value = sliderState,
+                value = sliderProgress,
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
                 onValueChange = { progress ->
-                    println("slider state: $progress")
-                    sliderState = progress
+                    println("user changed slider state to: $progress")
+                    sliderProgress = progress
                 }
             )
         }

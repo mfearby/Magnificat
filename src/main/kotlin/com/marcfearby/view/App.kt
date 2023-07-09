@@ -7,7 +7,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
 import com.marcfearby.audio.AudioPlayerState
 import com.marcfearby.audio.IAudioPlayer
-import com.marcfearby.controller.PlayerController
+import com.marcfearby.controller.PlayerViewController
 import com.marcfearby.controller.TabPaneController
 import com.marcfearby.model.PlayerState.*
 import org.koin.compose.koinInject
@@ -16,10 +16,12 @@ import org.koin.compose.koinInject
 @Preview
 fun App(): () -> Unit {
 
+    val audioPlayer = koinInject<IAudioPlayer>()
+
     var playerState by remember { mutableStateOf(Stopped) }
     var currentTrackIndex by remember { mutableStateOf(-1) }
     var currentTrackTitle by remember { mutableStateOf("") }
-    val audioPlayer = koinInject<IAudioPlayer>()
+    var currentTrackProgress by remember { mutableStateOf(0f) }
 
     fun loadNewState(newState: AudioPlayerState) {
         playerState = newState.playerState
@@ -27,19 +29,25 @@ fun App(): () -> Unit {
         currentTrackIndex = newState.currentTrackIndex
     }
 
+    fun progressUpdater(percent: Float) {
+        println("new progress received: $percent")
+        currentTrackProgress = percent
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 backgroundColor = MaterialTheme.colors.surface
             ) {
-                PlayerController(
+                PlayerViewController(
                     playerState = playerState,
                     togglePlayerState = {
                         loadNewState(
-                            audioPlayer.togglePlayerState(it)
+                            audioPlayer.togglePlayerState(state = it, updateProgress = ::progressUpdater)
                         )
                     },
-                    currentTrackTitle = currentTrackTitle
+                    currentTrackTitle = currentTrackTitle,
+                    trackProgress = currentTrackProgress
                 )
             }
         }
@@ -55,7 +63,6 @@ fun App(): () -> Unit {
     }
 
     return {
-        println("Calling audioPlayer.release() before exiting...")
         audioPlayer.release()
     }
 }

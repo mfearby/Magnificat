@@ -7,8 +7,15 @@ import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.component.CallbackMediaPlayerComponent
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
 
+typealias Milliseconds = Long
+
+interface ITrackListener {
+    fun onPlayerReady(duration: Milliseconds)
+    fun onTimeChanged(progress: Milliseconds)
+}
+
 interface IAudioPlayerWorker {
-    fun play(track: String?)
+    fun play(track: String?, listener: ITrackListener)
     fun stop()
     fun pause()
     fun setVolume(volume: Double)
@@ -16,16 +23,16 @@ interface IAudioPlayerWorker {
 }
 
 class AudioPlayerWorker: IAudioPlayerWorker {
+    // vlcj 4.x Tutorial: https://capricasoftware.co.uk/tutorials/vlcj/4
     private var mediaPlayer: MediaPlayer? = null
 
     override fun release() {
-        println("Releasing MediaPlayer resources")
         mediaPlayer?.release()
     }
 
-    override fun play(track: String?) {
+    override fun play(track: String?, listener: ITrackListener) {
         track?.let {
-            playTrack(it)
+            playTrack(it, listener)
         }
     }
 
@@ -41,14 +48,19 @@ class AudioPlayerWorker: IAudioPlayerWorker {
         TODO("Not yet implemented")
     }
 
-    private fun playTrack(track: String) {
+    private fun playTrack(track: String, listener: ITrackListener) {
         val path = getTestTrack(track)
-        initPlayer(path)
+
+        if (mediaPlayer == null) {
+            initPlayer(listener)
+        }
+
+        mediaPlayer?.media()?.play(path)
     }
 
     // This requires you to have VLC installed on your computer (when debugging in IntelliJ).
     // Apparently there's a way to package libvlc from that installation. I'll worry about that later.
-    private fun initPlayer(path: String) {
+    private fun initPlayer(listener: ITrackListener) {
         NativeDiscovery().discover()
 
         // MacOS needs a different version, see: https://capricasoftware.co.uk/tutorials/vlcj/4/prerequisites
@@ -58,23 +70,17 @@ class AudioPlayerWorker: IAudioPlayerWorker {
             EmbeddedMediaPlayerComponent().mediaPlayer()
         }
 
-        mediaPlayer?.media()?.play(path)
-
         mediaPlayer?.events()?.addMediaPlayerEventListener(object: MediaPlayerEventAdapter() {
             override fun mediaPlayerReady(mediaPlayer: MediaPlayer?) {
                 super.mediaPlayerReady(mediaPlayer)
-                println("on ready")
+                val duration = mediaPlayer?.media()?.info()?.duration() ?: -1
+                listener.onPlayerReady(duration)
             }
 
             override fun timeChanged(mediaPlayer: MediaPlayer?, newTime: Long) {
-                println("new time: $newTime")
-            }
-
-            override fun lengthChanged(mediaPlayer: MediaPlayer?, newLength: Long) {
-                println("new length: $newLength")
+                listener.onTimeChanged(newTime)
             }
         })
-
     }
 }
 

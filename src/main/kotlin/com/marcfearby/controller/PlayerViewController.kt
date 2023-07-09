@@ -5,10 +5,11 @@ import com.marcfearby.model.PlayerState
 import com.marcfearby.view.player.PlayerView
 
 @Composable
-fun PlayerController(
+fun PlayerViewController(
     playerState: PlayerState,
     togglePlayerState: (state: PlayerState) -> Unit,
-    currentTrackTitle: String
+    currentTrackTitle: String,
+    trackProgress: Float
 ) {
     var isMuted by remember { mutableStateOf(false) }
 
@@ -17,6 +18,7 @@ fun PlayerController(
         isMuted = isMuted,
         togglePlayerState = { togglePlayerState(it) },
         toggleMuted = { isMuted = it },
-        currentTrackTitle = currentTrackTitle
+        currentTrackTitle = currentTrackTitle,
+        trackProgress = trackProgress
     )
 }

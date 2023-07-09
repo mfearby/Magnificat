@@ -13,13 +13,14 @@ internal val audioPlayerModule = module {
 data class AudioPlayerState(
     val currentTrackIndex: Int,
     val currentTrackTitle: String,
-    val playerState: PlayerState
+    val playerState: PlayerState,
 )
 
 interface IAudioPlayer {
     val playerState: PlayerState
+    val currentTrackProgress: Float
     fun setTrackList(files: List<String>, startIndex: Int): AudioPlayerState
-    fun togglePlayerState(state: PlayerState): AudioPlayerState
+    fun togglePlayerState(state: PlayerState, updateProgress: (percent: Float) -> Unit): AudioPlayerState
     fun play(): AudioPlayerState
     fun pause(): AudioPlayerState
     fun stop(): AudioPlayerState
@@ -34,19 +35,33 @@ class AudioPlayer(
 
     override var playerState = Stopped
     private var currentTrackIndex = -1
+    private var currentTrackLength: Milliseconds = 0
+    private var currentTrackTime: Milliseconds = 0
     private var currentTrackTitle = ""
     private var trackList = mutableListOf("111", "222", "333", "444", "555")
+
+    override val currentTrackProgress: Float
+        get() = if (currentTrackTime > 0 && currentTrackLength > 0)
+            currentTrackTime / currentTrackLength.toFloat()
+        else
+            0f
 
     override fun release() {
         audioPlayerWorker.release()
     }
 
-    override fun togglePlayerState(state: PlayerState): AudioPlayerState = when (state) {
-        Playing -> play()
-        Paused -> pause()
-        Stopped -> stop()
-        MovingNext -> next()
-        MovingPrevious -> previous()
+    private var progressEmitter: ((Float) -> Unit)? = null
+
+    override fun togglePlayerState(state: PlayerState, updateProgress: (percent: Float) -> Unit): AudioPlayerState {
+        progressEmitter = updateProgress
+
+        return when (state) {
+            Playing -> play()
+            Paused -> pause()
+            Stopped -> stop()
+            MovingNext -> next()
+            MovingPrevious -> previous()
+        }
     }
 
     override fun setTrackList(files: List<String>, startIndex: Int): AudioPlayerState {
@@ -64,7 +79,18 @@ class AudioPlayer(
             currentTrackIndex = 0
         }
         currentTrackTitle = trackList[currentTrackIndex]
-        audioPlayerWorker.play(currentTrackTitle)
+
+        audioPlayerWorker.play(currentTrackTitle, object: ITrackListener {
+            override fun onPlayerReady(duration: Milliseconds) {
+                currentTrackLength = duration
+            }
+
+            override fun onTimeChanged(progress: Milliseconds) {
+                currentTrackTime = progress
+                progressEmitter?.invoke(currentTrackProgress)
+            }
+        })
+
         return currentState()
     }
 
