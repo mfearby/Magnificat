@@ -12,6 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marcfearby.common.utils.PlayerIcons
+import com.marcfearby.common.utils.toLabel
 import com.marcfearby.model.PlayerState
 import com.marcfearby.model.PlayerState.*
 import com.marcfearby.model.ProgressUpdate
@@ -30,7 +31,7 @@ fun PlayerView(
 
     LaunchedEffect(trackProgress) {
         sliderProgress = trackProgress.currentPositionPercentage
-        println("updating slider progress: $sliderProgress")
+//        println("updating slider progress: $sliderProgress")
     }
 
     Row {
@@ -64,7 +65,7 @@ fun PlayerView(
         }
 
         Text(
-            text = "00:00",
+            text = trackProgress.currentPosition.toLabel(), // "00:00",
             fontSize = 14.sp,
             modifier = Modifier
                 .align(alignment = Alignment.CenterVertically)
@@ -94,7 +95,7 @@ fun PlayerView(
         }
 
         Text(
-            text = "-00:00",
+            text = trackProgress.totalLength.toLabel(), // "-00:00",
             fontSize = 14.sp,
             modifier = Modifier
                 .align(alignment = Alignment.CenterVertically)

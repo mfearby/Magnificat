@@ -1,6 +1,6 @@
 package com.marcfearby.model
 
-import com.marcfearby.audio.Milliseconds
+import com.marcfearby.common.utils.Milliseconds
 
 data class ProgressUpdate(
     var totalLength: Milliseconds = 0,

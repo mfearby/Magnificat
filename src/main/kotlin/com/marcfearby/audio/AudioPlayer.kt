@@ -1,5 +1,6 @@
 package com.marcfearby.audio
 
+import com.marcfearby.common.utils.Milliseconds
 import com.marcfearby.model.PlayerState
 import com.marcfearby.model.PlayerState.*
 import com.marcfearby.model.ProgressUpdate

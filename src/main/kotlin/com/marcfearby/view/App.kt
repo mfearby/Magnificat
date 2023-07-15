@@ -31,7 +31,7 @@ fun App(): () -> Unit {
     }
 
     fun progressUpdater(progress: ProgressUpdate) {
-        println("new progress percentage: ${progress.currentPositionPercentage}")
+//        println("new progress percentage: ${progress.currentPositionPercentage}")
         currentTrackProgress = progress
     }
 

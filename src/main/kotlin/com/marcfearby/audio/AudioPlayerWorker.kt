@@ -1,13 +1,12 @@
 package com.marcfearby.audio
 
+import com.marcfearby.common.utils.Milliseconds
 import com.marcfearby.common.utils.isMacOS
 import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.component.CallbackMediaPlayerComponent
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
-
-typealias Milliseconds = Long
 
 interface ITrackListener {
     fun onPlayerReady(duration: Milliseconds)
