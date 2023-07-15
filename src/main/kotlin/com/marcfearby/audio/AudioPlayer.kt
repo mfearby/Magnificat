@@ -2,6 +2,7 @@ package com.marcfearby.audio
 
 import com.marcfearby.model.PlayerState
 import com.marcfearby.model.PlayerState.*
+import com.marcfearby.model.ProgressUpdate
 import org.koin.dsl.module
 
 // component for dependency injection via koin
@@ -18,9 +19,8 @@ data class AudioPlayerState(
 
 interface IAudioPlayer {
     val playerState: PlayerState
-    val currentTrackProgress: Float
     fun setTrackList(files: List<String>, startIndex: Int): AudioPlayerState
-    fun togglePlayerState(state: PlayerState, updateProgress: (percent: Float) -> Unit): AudioPlayerState
+    fun togglePlayerState(state: PlayerState, update: (progress: ProgressUpdate) -> Unit): AudioPlayerState
     fun play(): AudioPlayerState
     fun pause(): AudioPlayerState
     fun stop(): AudioPlayerState
@@ -40,20 +40,14 @@ class AudioPlayer(
     private var currentTrackTitle = ""
     private var trackList = mutableListOf("111", "222", "333", "444", "555")
 
-    override val currentTrackProgress: Float
-        get() = if (currentTrackTime > 0 && currentTrackLength > 0)
-            currentTrackTime / currentTrackLength.toFloat()
-        else
-            0f
-
     override fun release() {
         audioPlayerWorker.release()
     }
 
-    private var progressEmitter: ((Float) -> Unit)? = null
+    private var progressEmitter: ((ProgressUpdate) -> Unit)? = null
 
-    override fun togglePlayerState(state: PlayerState, updateProgress: (percent: Float) -> Unit): AudioPlayerState {
-        progressEmitter = updateProgress
+    override fun togglePlayerState(state: PlayerState, update: (progress: ProgressUpdate) -> Unit): AudioPlayerState {
+        progressEmitter = update
 
         return when (state) {
             Playing -> play()
@@ -87,7 +81,7 @@ class AudioPlayer(
 
             override fun onTimeChanged(progress: Milliseconds) {
                 currentTrackTime = progress
-                progressEmitter?.invoke(currentTrackProgress)
+                progressEmitter?.invoke(ProgressUpdate(currentTrackLength, currentTrackTime))
             }
         })
 

@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import com.marcfearby.common.utils.PlayerIcons
 import com.marcfearby.model.PlayerState
 import com.marcfearby.model.PlayerState.*
+import com.marcfearby.model.ProgressUpdate
 
 @Composable
 @Preview
@@ -23,13 +24,13 @@ fun PlayerView(
     togglePlayerState: (state: PlayerState) -> Unit,
     toggleMuted: (muted: Boolean) -> Unit,
     currentTrackTitle: String,
-    trackProgress: Float
+    trackProgress: ProgressUpdate
 ) {
     var sliderProgress by remember { mutableStateOf(0f) }
 
     LaunchedEffect(trackProgress) {
-        println("updating slider progress: $trackProgress")
-        sliderProgress = trackProgress
+        sliderProgress = trackProgress.currentPositionPercentage
+        println("updating slider progress: $sliderProgress")
     }
 
     Row {

@@ -10,6 +10,7 @@ import com.marcfearby.audio.IAudioPlayer
 import com.marcfearby.controller.PlayerViewController
 import com.marcfearby.controller.TabPaneController
 import com.marcfearby.model.PlayerState.*
+import com.marcfearby.model.ProgressUpdate
 import org.koin.compose.koinInject
 
 @Composable
@@ -21,7 +22,7 @@ fun App(): () -> Unit {
     var playerState by remember { mutableStateOf(Stopped) }
     var currentTrackIndex by remember { mutableStateOf(-1) }
     var currentTrackTitle by remember { mutableStateOf("") }
-    var currentTrackProgress by remember { mutableStateOf(0f) }
+    var currentTrackProgress by remember { mutableStateOf(ProgressUpdate()) }
 
     fun loadNewState(newState: AudioPlayerState) {
         playerState = newState.playerState
@@ -29,9 +30,9 @@ fun App(): () -> Unit {
         currentTrackIndex = newState.currentTrackIndex
     }
 
-    fun progressUpdater(percent: Float) {
-        println("new progress received: $percent")
-        currentTrackProgress = percent
+    fun progressUpdater(progress: ProgressUpdate) {
+        println("new progress percentage: ${progress.currentPositionPercentage}")
+        currentTrackProgress = progress
     }
 
     Scaffold(
@@ -43,7 +44,7 @@ fun App(): () -> Unit {
                     playerState = playerState,
                     togglePlayerState = {
                         loadNewState(
-                            audioPlayer.togglePlayerState(state = it, updateProgress = ::progressUpdater)
+                            audioPlayer.togglePlayerState(state = it, update = ::progressUpdater)
                         )
                     },
                     currentTrackTitle = currentTrackTitle,

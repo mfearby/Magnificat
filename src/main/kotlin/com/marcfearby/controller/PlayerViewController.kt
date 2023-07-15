@@ -2,6 +2,7 @@ package com.marcfearby.controller
 
 import androidx.compose.runtime.*
 import com.marcfearby.model.PlayerState
+import com.marcfearby.model.ProgressUpdate
 import com.marcfearby.view.player.PlayerView
 
 @Composable
@@ -9,7 +10,7 @@ fun PlayerViewController(
     playerState: PlayerState,
     togglePlayerState: (state: PlayerState) -> Unit,
     currentTrackTitle: String,
-    trackProgress: Float
+    trackProgress: ProgressUpdate
 ) {
     var isMuted by remember { mutableStateOf(false) }
 
