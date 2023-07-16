@@ -3,6 +3,7 @@ package com.marcfearby.view.player
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.*
 import com.marcfearby.model.PlayerState
+import com.marcfearby.model.ProgressUpdate
 import org.junit.After
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -29,13 +30,15 @@ internal class PlayerViewKtTest {
 
     @Composable
     private fun setupPlayer(
-        currentTrack: String = ""
+        currentTrack: String = "",
+        trackProgress: ProgressUpdate = ProgressUpdate()
     ) = PlayerView(
         playerState = playerState,
         isMuted = isMuted,
         togglePlayerState = ::togglePlayerState,
         toggleMuted = ::toggleMuted,
-        currentTrackTitle = currentTrack
+        currentTrackTitle = currentTrack,
+        trackProgress = trackProgress
     )
 
     @Test
@@ -72,7 +75,7 @@ internal class PlayerViewKtTest {
     fun `should display the title of the currently playing track`() = runDesktopComposeUiTest {
         val trackName = "Hello there"
         setContent {
-            setupPlayer(trackName)
+            setupPlayer(currentTrack = trackName)
         }
         onNodeWithTag("currentTrack").assertTextEquals(trackName)
     }
@@ -83,5 +86,15 @@ internal class PlayerViewKtTest {
             setupPlayer()
         }
         onNodeWithTag("currentTrack").assertTextEquals("")
+    }
+
+    @Test
+    fun `should display progress update`() = runDesktopComposeUiTest {
+        val progress = ProgressUpdate(69000, 5000)
+        setContent {
+            setupPlayer(trackProgress = progress)
+        }
+        onNodeWithTag("currentPosition").assertTextEquals("00:05")
+        onNodeWithTag("totalLength").assertTextEquals("01:09")
     }
 }

@@ -70,6 +70,7 @@ fun PlayerView(
             modifier = Modifier
                 .align(alignment = Alignment.CenterVertically)
                 .padding(start = 15.dp, top = 0.dp, end = 0.dp, bottom = 0.dp)
+                .testTag("currentPosition")
         )
 
         Column(
@@ -100,6 +101,7 @@ fun PlayerView(
             modifier = Modifier
                 .align(alignment = Alignment.CenterVertically)
                 .padding(start = 15.dp, top = 0.dp, end = 0.dp, bottom = 0.dp)
+                .testTag("totalLength")
         )
 
         PlayerButton(
